@@ -5,174 +5,74 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Expense Reimbursement</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #2C302E;
-      color: white;
-      margin: 0;
-      padding: 0;
-    }
-
-    .container {
-      max-width: 600px;
-      margin: 3rem auto;
-      background: #ffffff;
-      color: #2C302E;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 0 20px rgba(0,0,0,0.2);
-    }
-
-    header {
-      background-color: #321CA4;
-      padding: 1.5rem;
-      text-align: center;
-      color: white;
-    }
-
-    header h1 {
-      margin: 0;
-      font-size: 1.8rem;
-    }
-
-    form {
-      padding: 2rem;
-    }
-
-    .step {
-      margin-bottom: 1.5rem;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 0.5rem;
-      font-weight: bold;
-    }
-
-    input[type="text"],
-    input[type="email"],
-    input[type="number"],
-    textarea,
-    select {
-      width: 100%;
-      padding: 0.75rem;
-      border: 2px solid #B16AAF;
-      border-radius: 8px;
-      font-size: 1rem;
-      margin-bottom: 1rem;
-    }
-
-    input[type="file"] {
-      margin-top: 0.5rem;
-    }
-
-    .category-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      margin-bottom: 1rem;
-    }
-
-    .category-option {
-      flex: 1 1 45%;
-      padding: 1rem;
-      border: 2px solid #D97688;
-      border-radius: 10px;
-      text-align: center;
-      cursor: pointer;
-      transition: 0.3s ease;
-    }
-
-    .category-option:hover,
-    .category-option.selected {
-      background-color: #D97688;
-      color: white;
-    }
-
-    .category-option i {
-      font-size: 1.5rem;
-      margin-bottom: 0.5rem;
-    }
-
-    .submit-btn {
-      background-color: #06BEE1;
-      color: white;
-      padding: 1rem;
-      width: 100%;
-      font-size: 1.1rem;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: 0.3s ease;
-    }
-
-    .submit-btn:hover {
-      background-color: #059DC1;
-    }
-  </style>
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const options = document.querySelectorAll('.category-option');
-      const categoryInput = document.getElementById('category');
-
-      options.forEach(opt => {
-        opt.addEventListener('click', () => {
-          options.forEach(o => o.classList.remove('selected'));
-          opt.classList.add('selected');
-          categoryInput.value = opt.getAttribute('data-value');
-        });
-      });
-    });
-  </script>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-  <div class="container">
-    <header>
-      <h1>Submit Your Expense</h1>
-    </header>
-
-    <form action="https://formspree.io/f/xgvyobza" method="POST" enctype="multipart/form-data">
-      <div class="step">
-        <label for="name">Full Name</label>
-        <input name="name" id="name" type="text" required />
+  <div class="progress-bar">
+      <div class="progress" id="progressIndicator"></div>
+    </div>
+    <div class="form-container">
+    <form id="expenseForm" action="https://formspree.io/f/your_form_id" method="POST" enctype="multipart/form-data">
+      <div class="step" data-step="1">
+        <h2>What's your name?</h2>
+        <input name="name" type="text" required />
+        <button type="button" class="next-btn">Next</button>
       </div>
 
-      <div class="step">
-        <label for="email">Email Address</label>
-        <input name="email" id="email" type="email" required />
+      <div class="step" data-step="2">
+        <h2>Your email</h2>
+        <input name="email" type="email" required />
+        <button type="button" class="prev-btn">Back</button>
+        <button type="button" class="next-btn">Next</button>
       </div>
 
-      <div class="step">
-        <label>Expense Category</label>
+      <div class="step" data-step="3">
+        <h2>Expense Category</h2>
         <div class="category-grid">
-          <div class="category-option" data-value="Travel"><i class="fas fa-plane"></i><div>Travel</div></div>
-          <div class="category-option" data-value="Meals"><i class="fas fa-utensils"></i><div>Meals</div></div>
-          <div class="category-option" data-value="Supplies"><i class="fas fa-box"></i><div>Supplies</div></div>
-          <div class="category-option" data-value="Other"><i class="fas fa-ellipsis-h"></i><div>Other</div></div>
+          <div class="category-option" data-value="Travel"><i class="fas fa-plane"></i>Travel</div>
+          <div class="category-option" data-value="Meals"><i class="fas fa-utensils"></i>Meals</div>
+          <div class="category-option" data-value="Supplies"><i class="fas fa-box"></i>Supplies</div>
+          <div class="category-option" data-value="Other"><i class="fas fa-ellipsis-h"></i>Other</div>
         </div>
         <input type="hidden" name="category" id="category" required />
+        <button type="button" class="prev-btn">Back</button>
+        <button type="button" class="next-btn">Next</button>
       </div>
 
-      <div class="step">
-        <label for="amount">Amount (£ or miles)</label>
-        <input name="amount" id="amount" type="number" step="0.01" required />
+      <div class="step" data-step="4" id="travelModeStep" style="display: none;">
+        <h2>Travel Mode</h2>
+        <select id="travelMode" name="travel_mode">
+          <option value="">Select a mode</option>
+          <option value="own_car">Own Car</option>
+          <option value="bus">Bus</option>
+          <option value="train">Train</option>
+        </select>
+        <button type="button" class="prev-btn">Back</button>
+        <button type="button" class="next-btn">Next</button>
       </div>
 
-      <div class="step">
-        <label for="description">Description</label>
-        <textarea name="description" id="description" rows="4" required></textarea>
+      <div class="step" data-step="5" id="expenseDetailsStep">
+        <div id="publicTransportFields">
+          <h2>Amount (£) and Receipt</h2>
+          <input name="amount" type="number" step="0.01" />
+          <label>Upload Receipt</label>
+          <input name="receipt" type="file" accept=".jpg,.jpeg,.png,.pdf" />
+        </div>
+        <div id="ownCarFields" style="display: none;">
+          <h2>Enter Mileage and Addresses</h2>
+          <input name="mileage" type="number" placeholder="Mileage (miles)" />
+          <input name="start_address" type="text" placeholder="Start Address" />
+          <input name="end_address" type="text" placeholder="End Address" />
+        </div>
+        <button type="button" class="prev-btn">Back</button>
+        <button type="submit" class="submit-btn">Submit</button>
       </div>
-
-      <div class="step">
-        <label for="receipt">Upload Receipt</label>
-        <input name="receipt" id="receipt" type="file" accept=".jpg,.jpeg,.png,.pdf" required />
-      </div>
-
-      <button class="submit-btn" type="submit">Submit Expense</button>
     </form>
   </div>
-
+  <div id="thankYou" class="thank-you" style="display:none;">
+      <h2>Thanks! 🎉</h2>
+      <p>Your expense has been submitted.</p>
+    </div>
+    <script src="script.js"></script>
 </body>
 </html>
