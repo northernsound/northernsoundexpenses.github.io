@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Expense Reimbursement</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #2C302E;
+      color: white;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 3rem auto;
+      background: #ffffff;
+      color: #2C302E;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 0 20px rgba(0,0,0,0.2);
+    }
+
+    header {
+      background-color: #321CA4;
+      padding: 1.5rem;
+      text-align: center;
+      color: white;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 1.8rem;
+    }
+
+    form {
+      padding: 2rem;
+    }
+
+    .step {
+      margin-bottom: 1.5rem;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="number"],
+    textarea,
+    select {
+      width: 100%;
+      padding: 0.75rem;
+      border: 2px solid #B16AAF;
+      border-radius: 8px;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    input[type="file"] {
+      margin-top: 0.5rem;
+    }
+
+    .category-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .category-option {
+      flex: 1 1 45%;
+      padding: 1rem;
+      border: 2px solid #D97688;
+      border-radius: 10px;
+      text-align: center;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    .category-option:hover,
+    .category-option.selected {
+      background-color: #D97688;
+      color: white;
+    }
+
+    .category-option i {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .submit-btn {
+      background-color: #06BEE1;
+      color: white;
+      padding: 1rem;
+      width: 100%;
+      font-size: 1.1rem;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    .submit-btn:hover {
+      background-color: #059DC1;
+    }
+  </style>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const options = document.querySelectorAll('.category-option');
+      const categoryInput = document.getElementById('category');
+
+      options.forEach(opt => {
+        opt.addEventListener('click', () => {
+          options.forEach(o => o.classList.remove('selected'));
+          opt.classList.add('selected');
+          categoryInput.value = opt.getAttribute('data-value');
+        });
+      });
+    });
+  </script>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <h1>Submit Your Expense</h1>
+    </header>
+
+    <form action="https://formspree.io/f/xgvyobza" method="POST" enctype="multipart/form-data">
+      <div class="step">
+        <label for="name">Full Name</label>
+        <input name="name" id="name" type="text" required />
+      </div>
+
+      <div class="step">
+        <label for="email">Email Address</label>
+        <input name="email" id="email" type="email" required />
+      </div>
+
+      <div class="step">
+        <label>Expense Category</label>
+        <div class="category-grid">
+          <div class="category-option" data-value="Travel"><i class="fas fa-plane"></i><div>Travel</div></div>
+          <div class="category-option" data-value="Meals"><i class="fas fa-utensils"></i><div>Meals</div></div>
+          <div class="category-option" data-value="Supplies"><i class="fas fa-box"></i><div>Supplies</div></div>
+          <div class="category-option" data-value="Other"><i class="fas fa-ellipsis-h"></i><div>Other</div></div>
+        </div>
+        <input type="hidden" name="category" id="category" required />
+      </div>
+
+      <div class="step">
+        <label for="amount">Amount ($)</label>
+        <input name="amount" id="amount" type="number" step="0.01" required />
+      </div>
+
+      <div class="step">
+        <label for="description">Description</label>
+        <textarea name="description" id="description" rows="4" required></textarea>
+      </div>
+
+      <div class="step">
+        <label for="receipt">Upload Receipt</label>
+        <input name="receipt" id="receipt" type="file" accept=".jpg,.jpeg,.png,.pdf" required />
+      </div>
+
+      <button class="submit-btn" type="submit">Submit Expense</button>
+    </form>
+  </div>
+
+</body>
+</html>
